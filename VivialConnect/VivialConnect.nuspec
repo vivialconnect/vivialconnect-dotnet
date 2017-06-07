@@ -6,7 +6,7 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/vivialconnect/vivialconnect-dotnet/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/vivialconnect/vivialconnect-dotnet/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/vivialconnect/vivialconnect-dotnet</projectUrl>
     <iconUrl>https://avatars1.githubusercontent.com/u/25512783?v=3&amp;s=64</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
