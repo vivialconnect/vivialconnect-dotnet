@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D792B3C9-596A-4E82-9C67-97C10DD216F9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VivialConnect</RootNamespace>
+    <AssemblyName>VivialConnect</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\CallbackJsonConverter.cs" />
+    <Compile Include="Crypto\Hash.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
+    <Compile Include="Exceptions\AuthenticationException.cs" />
+    <Compile Include="Exceptions\VcException.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Http\Body.cs" />
+    <Compile Include="Http\IBody.cs" />
+    <Compile Include="Http\IQueryParams.cs" />
+    <Compile Include="Http\IVcRestClient.cs" />
+    <Compile Include="Http\Method.cs" />
+    <Compile Include="Http\QueryParams.cs" />
+    <Compile Include="Http\Request.cs" />
+    <Compile Include="Http\Response.cs" />
+    <Compile Include="Mappings\AccountProfile.cs" />
+    <Compile Include="Mappings\ConnectorProfile.cs" />
+    <Compile Include="Mappings\MessageProfile.cs" />
+    <Compile Include="Mappings\NumberProfile.cs" />
+    <Compile Include="Mappings\ResourceConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Account\AccountLogItem.cs" />
+    <Compile Include="Resources\Account\AccountLogs.cs" />
+    <Compile Include="Resources\Account\AccountLogsAggregateQueryParams.cs" />
+    <Compile Include="Resources\Account\AccountLogsQueryParams.cs" />
+    <Compile Include="Resources\Account\Account.cs" />
+    <Compile Include="Http\VcRestClient.cs" />
+    <Compile Include="Resources\Account\AccountLogAggregateItem.cs" />
+    <Compile Include="Resources\Account\AccountLogsAggregate.cs" />
+    <Compile Include="Resources\Account\Contact.cs" />
+    <Compile Include="Resources\Account\LogItem.cs" />
+    <Compile Include="Resources\Account\Logs.cs" />
+    <Compile Include="Resources\Account\LogsQueryParams.cs" />
+    <Compile Include="Resources\Account\AggregatorTypeEnum.cs" />
+    <Compile Include="Resources\Account\Service.cs" />
+    <Compile Include="Resources\Account\UpdateAccount.cs" />
+    <Compile Include="Resources\Connector\Callback.cs" />
+    <Compile Include="Resources\Connector\CallbackIncoming.cs" />
+    <Compile Include="Resources\Connector\CallbackIncomingFallback.cs" />
+    <Compile Include="Resources\Connector\CallbackStatus.cs" />
+    <Compile Include="Resources\Connector\Connector.cs" />
+    <Compile Include="Resources\Connector\CreateConnector.cs" />
+    <Compile Include="Resources\Connector\EventTypeEnum.cs" />
+    <Compile Include="Resources\Connector\ICallback.cs" />
+    <Compile Include="Resources\Connector\MessageTypeEnum.cs" />
+    <Compile Include="Resources\Connector\ConnectorNumber.cs" />
+    <Compile Include="Resources\Connector\UpdateConnector.cs" />
+    <Compile Include="Resources\ContainsQueryParams.cs" />
+    <Compile Include="Resources\IContainsQueryParams.cs" />
+    <Compile Include="Resources\INameQueryParams.cs" />
+    <Compile Include="Resources\IPagingQueryParams.cs" />
+    <Compile Include="Resources\IResourceEntity.cs" />
+    <Compile Include="Resources\Message\Attachment.cs" />
+    <Compile Include="Resources\Message\CreateMessage.cs" />
+    <Compile Include="Resources\Message\Media.cs" />
+    <Compile Include="Resources\Message\Message.cs" />
+    <Compile Include="Resources\Message\UpdateMessage.cs" />
+    <Compile Include="Resources\NameQueryParams.cs" />
+    <Compile Include="Resources\Number\Capabilities.cs" />
+    <Compile Include="Resources\Number\Carrier.cs" />
+    <Compile Include="Resources\Number\CarrierCapabilities.cs" />
+    <Compile Include="Resources\Number\CountQueryParams.cs" />
+    <Compile Include="Resources\Number\CreateNumber.cs" />
+    <Compile Include="Resources\Number\CreateNumberLocal.cs" />
+    <Compile Include="Resources\Number\Device.cs" />
+    <Compile Include="Resources\Number\LookupQueryParams.cs" />
+    <Compile Include="Resources\Number\NumberAvailable.cs" />
+    <Compile Include="Resources\Number\NumberInfo.cs" />
+    <Compile Include="Resources\Number\NumbersQueryParams.cs" />
+    <Compile Include="Resources\Number\NumbersAvailableQueryParams.cs" />
+    <Compile Include="Resources\Number\Number.cs" />
+    <Compile Include="Resources\PhoneNumberTypeEnum.cs" />
+    <Compile Include="Resources\Number\RegionEnum.cs" />
+    <Compile Include="Resources\Number\UpdateNumber.cs" />
+    <Compile Include="Resources\PagingQueryParams.cs" />
+    <Compile Include="Resources\Resource.cs" />
+    <Compile Include="Resources\ResourceEntity.cs" />
+    <Compile Include="Resources\User\Role.cs" />
+    <Compile Include="Resources\User\UpdatePassword.cs" />
+    <Compile Include="Resources\User\User.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Http\SignResult.cs" />
+    <Compile Include="VcClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="VivialConnect.nuspec" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

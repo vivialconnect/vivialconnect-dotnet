@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/vivialconnect/vivialconnect-dotnet/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/vivialconnect/vivialconnect-dotnet</projectUrl>
+    <iconUrl>https://avatars1.githubusercontent.com/u/25512783?v=3&amp;s=64</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright © VivialConnect 2017</copyright>
+    <dependencies>
+      <dependency id="AutoMapper" version="6.0.2" />
+      <dependency id="Newtonsoft.Json" version="10.0.1" />
+      <dependency id="RestSharp" version="105.2.3" />
+    </dependencies>
+  </metadata>
+</package>
