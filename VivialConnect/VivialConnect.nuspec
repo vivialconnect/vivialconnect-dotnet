@@ -12,11 +12,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial release.</releaseNotes>
-    <copyright>Copyright © VivialConnect 2017</copyright>
+    <copyright>Copyright © Vivial 2020</copyright>
     <dependencies>
-      <dependency id="AutoMapper" version="6.0.2" />
-      <dependency id="Newtonsoft.Json" version="10.0.1" />
-      <dependency id="RestSharp" version="105.2.3" />
+      <dependency id="AutoMapper" version="10.0.0" />
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
+      <dependency id="RestSharp" version="106.11.4" />
     </dependencies>
   </metadata>
 </package>
