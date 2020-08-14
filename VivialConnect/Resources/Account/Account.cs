@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using AutoMapper;
 using Newtonsoft.Json;
 using VivialConnect.Http;
+using VivialConnect.Mappings;
 
 namespace VivialConnect.Resources.Account
 {
@@ -95,7 +95,7 @@ namespace VivialConnect.Resources.Account
             UpdateAccount updateAccount = new UpdateAccount { Id = this.Id, CompanyName = this.CompanyName };
 
             Account account = Update(updateAccount, client);
-            Mapper.Map(account, this);
+            ResourceConfiguration.GetMapper().Map(account, this);
         }
 
         /// <summary>

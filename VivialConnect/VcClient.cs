@@ -34,7 +34,6 @@ namespace VivialConnect
             _apiSecret = apiSecret;
             _apiBaseUrl = apiBaseUrl;
             _restClient = null;
-            ResourceConfiguration.Configure();
         }
 
         /// <summary>
