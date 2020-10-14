@@ -7,15 +7,23 @@ namespace VivialConnect.Mappings
     /// </summary>
     public class ResourceConfiguration
     {
-        public static void Configure()
+        private static IMapper mapper;
+
+        public static IMapper GetMapper()
         {
-            Mapper.Initialize(cfg =>
+            if (mapper == null)
             {
-                cfg.AddProfile<AccountProfile>();
-                cfg.AddProfile<MessageProfile>();
-                cfg.AddProfile<NumberProfile>();
-                cfg.AddProfile<ConnectorProfile>();
-            });
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<AccountProfile>();
+                    cfg.AddProfile<MessageProfile>();
+                    cfg.AddProfile<NumberProfile>();
+                    cfg.AddProfile<ConnectorProfile>();
+                });
+                mapper = config.CreateMapper();
+            }
+
+            return mapper;
         }
     }
 }

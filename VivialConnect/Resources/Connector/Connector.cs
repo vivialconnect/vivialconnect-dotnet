@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using AutoMapper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VivialConnect.Converters;
 using VivialConnect.Http;
+using VivialConnect.Mappings;
 
 namespace VivialConnect.Resources.Connector
 {
@@ -160,7 +160,7 @@ namespace VivialConnect.Resources.Connector
                 connector = Update(this.AccountId, (int)this.Id, this.Active, this.Name, this.Callbacks, this.Numbers, (bool)this.MoreNumbers, client);
             }
 
-            Mapper.Map(connector, this);
+            ResourceConfiguration.GetMapper().Map(connector, this);
         }
 
         /// <summary>

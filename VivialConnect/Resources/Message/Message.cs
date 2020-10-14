@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using AutoMapper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using VivialConnect.Http;
+using VivialConnect.Mappings;
 
 namespace VivialConnect.Resources.Message
 {
@@ -18,7 +19,10 @@ namespace VivialConnect.Resources.Message
         private const string EndpointMessageId = "accounts/{0}/messages/{1}.json";
         private const string EndpointAttachments = "/accounts/{0}/messages/{1}/attachments.json";
         private const string EndpointAttachmentsCount = "/accounts/{0}/messages/{1}/attachments/count.json";
-        internal const string EndpointAttachmentId = "/accounts/{0}/messages/{1}/attachments/{2}{3}";
+        private const string EndpointAttachmentId = "/accounts/{0}/messages/{1}/attachments/{2}{3}";
+        private const string EndpointBulkJob = "/accounts/{0}/messages/bulk.json";
+        private const string EndpointBulkJobMessages = "/accounts/{0}/messages/bulk/{1}.json";
+
 
         private Message() { }
 
@@ -200,7 +204,7 @@ namespace VivialConnect.Resources.Message
         public void Redact(IVcRestClient client = null)
         {
             Message message = Update(this.AccountId, (int)this.Id, client);
-            Mapper.Map(message, this);
+            ResourceConfiguration.GetMapper().Map(message, this);
         }
 
         /// <summary>
@@ -222,6 +226,27 @@ namespace VivialConnect.Resources.Message
         public List<Attachment> Attachments(IVcRestClient client = null)
         {
             return GetAllAttachments(VcClient.AccountId, (int)this.Id, client);
+        }
+
+        /// <summary>
+        /// Gets all bulk jobs for account.
+        /// </summary>
+        /// <param name="client">REST client.</param>
+        /// <returns>Build jobs.</returns>
+        public static List<BulkJob> BulkJobs(IVcRestClient client = null)
+        {
+            return Get<BulkJob>(BuildGetBulkJobsUrl(VcClient.AccountId), client: client);
+        }
+
+        /// <summary>
+        /// Gets the messages for a bulk job.
+        /// </summary>
+        /// <param name="bulkJobId">Bulk job ID.</param>
+        /// <param name="client">REST client.</param>
+        /// <returns>Messages</returns>
+        public static List<Message> BulkJobMessages(string bulkJobId, IVcRestClient client = null)
+        {
+            return Get<Message>(BuildGetBulkJobMessagesUrl(VcClient.AccountId, bulkJobId), client: client);
         }
 
         /// <summary>
@@ -260,6 +285,21 @@ namespace VivialConnect.Resources.Message
         public static Message Send(string toNumber, string fromNumber, string body = null, List<string> mediaUrls = null, int? connectorId = null, IVcRestClient client = null)
         {
             return Create(VcClient.AccountId, toNumber, fromNumber, body, mediaUrls, connectorId, client);
+        }
+
+        /// <summary>
+        /// Send a message to multiple numbers with one request.
+        /// </summary>
+        /// <param name="toNumbers">To numbers.</param>
+        /// <param name="fromNumber">From number.</param>
+        /// <param name="connectorId">Connector ID.</param>
+        /// <param name="body">Body.</param>
+        /// <param name="mediaUrls">Media Urls.</param>
+        /// <param name="client">REST client.</param>
+        /// <returns>Builk Job Id</returns>
+        public static string SendBulk(List<string> toNumbers, string fromNumber = null, int? connectorId = null, string body = null, List<string> mediaUrls = null, IVcRestClient client = null)
+        {
+            return CreateBulkJob(VcClient.AccountId, toNumbers, fromNumber, connectorId, body, mediaUrls, client);
         }
 
         /// <summary>
@@ -383,6 +423,45 @@ namespace VivialConnect.Resources.Message
         }
 
         /// <summary>
+        /// Creates a bulk job under the specified account.
+        /// </summary>
+        /// <param name="accountId">Account ID.</param>
+        /// <param name="toNumbers">To numbers.</param>
+        /// <param name="fromNumber">From number.</param>
+        /// <param name="connectorId">Connector ID.</param>
+        /// <param name="body">Body.</param>
+        /// <param name="mediaUrls">Media Urls.</param>
+        /// <param name="client">REST clinet.</param>
+        /// <returns>Bulk Job ID</returns>
+        private static string CreateBulkJob(int accountId, List<string> toNumbers, string fromNumber = null, int? connectorId = null, string body = null, List<string> mediaUrls = null, IVcRestClient client = null)
+        {
+            CreateBulkJob createBulkJob = new CreateBulkJob(toNumbers)
+            {
+                FromNumber = fromNumber,
+                ConnectorId = connectorId,
+                Body = body,
+                MediaUrls = mediaUrls
+            };
+
+            return CreateBulkJob(accountId, createBulkJob, client);
+        }
+
+        /// <summary>
+        /// Creates a bulk job under the specified account.
+        /// </summary>
+        /// <param name="accountId">Account ID.</param>
+        /// <param name="createBulkJob">CreateBulkJob.</param>
+        /// <param name="client">REST client.</param>
+        /// <returns>Bulk Job ID</returns>
+        private static string CreateBulkJob(int accountId, CreateBulkJob createBulkJob, IVcRestClient client = null)
+        {
+            string content = CreateRawContent(BuildCreateBulkJobUrl(accountId), createBulkJob, client);
+            JObject json = JObject.Parse(content);
+
+            return json.First.First.ToString();
+        }
+
+        /// <summary>
         /// Updates the specified message.
         /// </summary>
         /// <param name="accountId">Account ID.</param>
@@ -460,6 +539,37 @@ namespace VivialConnect.Resources.Message
         }
 
         /// <summary>
+        /// Builds the create bulk job URL.
+        /// </summary>
+        /// <param name="accountId">Account ID.</param>
+        /// <returns></returns>
+        private static string BuildCreateBulkJobUrl(int accountId)
+        {
+            return string.Format(EndpointBulkJob, accountId);
+        }
+
+        /// <summary>
+        /// Builds the get bulk jobs URL.
+        /// </summary>
+        /// <param name="accountId">Account ID.</param>
+        /// <returns></returns>
+        private static string BuildGetBulkJobsUrl(int accountId)
+        {
+            return string.Format(EndpointBulkJob, accountId);
+        }
+
+        /// <summary>
+        /// Builds the get bulk job messages URL.
+        /// </summary>
+        /// <param name="accountId">Account ID.</param>
+        /// <param name="bulkJobId">Bulk job ID.</param>
+        /// <returns></returns>
+        private static string BuildGetBulkJobMessagesUrl(int accountId, string bulkJobId)
+        {
+            return string.Format(EndpointBulkJobMessages, accountId, bulkJobId);
+        }
+
+        /// <summary>
         /// Builds the update URL.
         /// </summary>
         /// <param name="accountId">Account ID.</param>
@@ -480,7 +590,7 @@ namespace VivialConnect.Resources.Message
         /// <returns></returns>
         internal static string BuildGetAttachmentUrl(int accountId, int messageId, int id, bool asJson = true)
         {
-            return string.Format(Message.EndpointAttachmentId, accountId, messageId, id, asJson ? ".json" : string.Empty);
+            return string.Format(EndpointAttachmentId, accountId, messageId, id, asJson ? ".json" : string.Empty);
         }
     }
 }

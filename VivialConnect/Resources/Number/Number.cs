@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using AutoMapper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using VivialConnect.Http;
+using VivialConnect.Mappings;
 
 namespace VivialConnect.Resources.Number
 {
@@ -262,7 +262,7 @@ namespace VivialConnect.Resources.Number
                 number = Update(this.AccountId, updateNumber, client);
             }
 
-            Mapper.Map(number, this);
+            ResourceConfiguration.GetMapper().Map(number, this);
         }
 
         /// <summary>

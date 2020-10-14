@@ -110,6 +110,49 @@ namespace VivialConnect.Test.Resources.MessageTests
             Assert.AreEqual(string.Empty, message.Body);
         }
 
+        [Test]
+        public void TestSendBulkResponse()
+        {
+            IVcRestClient client = Substitute.For<IVcRestClient>();
+            client.Request(Arg.Any<Request>())
+                .Returns(new Response(
+                    HttpStatusCode.OK,
+                    "{\"bulk_id\":\"72ee4d44-e931-56ad-8a4f-c487249fc5f0\"}"));
+
+            List<string> toNumbers = new List<string>() { "+17147473289", "+13236007085" };
+            string bulkJobId = Message.SendBulk(toNumbers, "+13105559999", body: "My text message to all!", client: client);
+
+            Assert.AreEqual("72ee4d44-e931-56ad-8a4f-c487249fc5f0", bulkJobId);
+        }
+
+        [Test]
+        public void TestBulkJobsResponse()
+        {
+            IVcRestClient client = Substitute.For<IVcRestClient>();
+            client.Request(Arg.Any<Request>())
+                .Returns(new Response(
+                            HttpStatusCode.OK,
+                            "{\"bulks\": [{\"bulk_id\": \"561dd015-3748-622a-b810-ba6ahc64a72a\",\"total_messages\": 100,\"date_created\": \"2020-07-17T09:54:31-04:00\",\"processed\": 100,\"errors\": 0,},{\"bulk_id\": \"665cc05-4158-788a-c321-rj6ahc64a72a\",\"total_messages\": 50,\"date_created\": \"2020-07-18T11:50:30-04:00\",\"processed\": 50,\"errors\": 0,}]}"
+                        ));
+
+            List<BulkJob> bulkJobs = Message.BulkJobs(client);
+            Assert.AreEqual(2, bulkJobs.Count);
+        }
+
+        [Test]
+        public void TestBulkJobMessagesResponse()
+        {
+            IVcRestClient client = Substitute.For<IVcRestClient>();
+            client.Request(Arg.Any<Request>())
+                .Returns(new Response(
+                            HttpStatusCode.OK,
+                            "{\"messages\":[{\"account_id\":10000,\"body\":\"This is a test 01\",\"bulk_id\":\"561dd015-3748-622a-b810-ba6ahc64a72a\",\"connector_id\":null,\"date_created\":\"2020-08-12T23:04:44+00:00\",\"date_modified\":\"2020-08-12T23:04:45+00:00\",\"dest_country\":\"US\",\"direction\":\"outbound-api\",\"encoding\":\"gsm0338\",\"error_code\":null,\"error_message\":null,\"from_number\":\"+13105551111\",\"id\":15000000,\"message_type\":\"local_sms\",\"num_media\":0,\"num_segments\":1,\"price\":null,\"price_currency\":null,\"sent\":\"2020-08-12T23:04:45+00:00\",\"status\":\"delivered\",\"to_number\":\"+13109995555\"},{\"account_id\":10000,\"body\":\"This is a test 02\",\"bulk_id\":\"561dd015-3748-622a-b810-ba6ahc64a72a\",\"connector_id\":null,\"date_created\":\"2020-08-12T23:04:44+00:00\",\"date_modified\":\"2020-08-12T23:04:45+00:00\",\"dest_country\":\"US\",\"direction\":\"outbound-api\",\"encoding\":\"gsm0338\",\"error_code\":null,\"error_message\":null,\"from_number\":\"+13105551111\",\"id\":15000001,\"message_type\":\"local_sms\",\"num_media\":0,\"num_segments\":1,\"price\":null,\"price_currency\":null,\"sent\":\"2020-08-12T23:04:45+00:00\",\"status\":\"delivered\",\"to_number\":\"+13109995555\"}]}"
+                        ));
+
+            List<Message> messages = Message.BulkJobMessages("561dd015-3748-622a-b810-ba6ahc64a72a", client);
+            Assert.AreEqual(2, messages.Count);
+        }
+
         public Message FindSingleResponse()
         {
             IVcRestClient client = Substitute.For<IVcRestClient>();

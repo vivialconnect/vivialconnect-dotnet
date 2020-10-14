@@ -154,6 +154,18 @@ namespace VivialConnect.Resources
         }
 
         /// <summary>
+        /// Executes a Create request with a raw response.
+        /// </summary>
+        /// <param name="url">Request URL.</param>
+        /// <param name="body">HTTP body.</param>
+        /// <param name="client">REST client.</param>
+        /// <returns></returns>
+        protected static string CreateRawContent(string url, IBody body = null, IVcRestClient client = null)
+        {
+            return CreateOrUpdateRawContent(Method.Post, url, body, client);
+        }
+
+        /// <summary>
         /// Executes a Create or Update request.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -170,6 +182,23 @@ namespace VivialConnect.Resources
             JObject json = JObject.Parse(response.Content);
 
             return JsonConvert.DeserializeObject<T>(json.First.First.ToString(), jsonConverters);
+        }
+
+        /// <summary>
+        /// Executes a Create or Update request with a raw response.
+        /// </summary>
+        /// <param name="method">HTTP method.</param>
+        /// <param name="url">Request URL.</param>
+        /// <param name="body">HTTP body.</param>
+        /// <param name="client">REST client.</param>
+        /// <returns></returns>
+        private static string CreateOrUpdateRawContent(string method, string url, IBody body, IVcRestClient client = null)
+        {
+            client = client ?? VcClient.GetRestClient();
+            Request request = new Request(method, url, body);
+            Response response = client.Request(request);
+
+            return response.Content;
         }
 
         /// <summary>
