@@ -11,7 +11,7 @@
     <iconUrl>https://avatars1.githubusercontent.com/u/25512783?v=3&amp;s=64</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Added support for Bulk jobs.</releaseNotes>
     <copyright>Copyright © Vivial 2020</copyright>
     <dependencies>
       <dependency id="AutoMapper" version="10.0.0" />

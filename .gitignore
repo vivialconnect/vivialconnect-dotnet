@@ -8,3 +8,7 @@
 /VivialConnect.Test/bin/Debug
 /VivialConnect/bin/Debug
 /.vs/VivialConnect-DotNet
+/VivialConnect.Test/bin/Release
+/VivialConnect.Test/obj/Release
+/VivialConnect/bin/Release
+/VivialConnect/obj/Release
